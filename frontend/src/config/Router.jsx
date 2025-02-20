@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Home from "../pages/Dashboard/sections/Home";
 import AuthLayout from "../layouts/AuthLayout";
 import SignUp from "../pages/Authentication/SignUp";
 import SignIn from "../pages/Authentication/SignIn";
 import PrivetRoute from "../routes/PrivetRoute";
+import TaskBoard from "../pages/Dashboard/TaskBoard";
 
 function Router() {
   return (
@@ -17,7 +17,7 @@ function Router() {
         </Route>
         <Route element={<PrivetRoute />}>
           <Route path="/" element={<DashboardLayout />}>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<TaskBoard />} />
           </Route>
         </Route>
       </Routes>
