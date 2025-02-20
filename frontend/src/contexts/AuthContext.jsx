@@ -14,7 +14,7 @@ const AuthContext = createContext();
 const googleProvider = new GoogleAuthProvider();
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const signUpWithEmailAndPassword = (email, pass) => {
@@ -50,22 +50,7 @@ function AuthProvider({ children }) {
       setUser(userCredential);
       setLoading(false);
 
-      //   if (userCredential) {
-      //     if (!localStorage.getItem("access-token")) {
-      //       // create token
-      //       const { data } = await axiosSecure.post(`/api/jwt/create`, {
-      //         id: userCredential.uid,
-      //         email: userCredential.email,
-      //       });
-
-      //       localStorage.setItem("access-token", data.token);
-      //     }
-      //   } else {
-      //     //  remove token
-      //     if (localStorage.getItem("access-token")) {
-      //       localStorage.removeItem("access-token");
-      //     }
-      //   }
+      console.log(userCredential);
     });
 
     return () => clearObserver;

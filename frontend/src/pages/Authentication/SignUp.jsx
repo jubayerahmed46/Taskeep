@@ -7,13 +7,15 @@ import { useState } from "react";
 import { updateProfile } from "firebase/auth";
 import ToastMessage from "../../components/ToastMessage";
 import { FaArrowsSpin } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
 
 function SignUp() {
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
   const { signUpWithEmailAndPassword } = useAuth();
   const [firebaseErr, setFirebaseErr] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (userCredential) => {
     userCredential.preventDefault();
@@ -30,14 +32,22 @@ function SignUp() {
     setLoading(true);
     setFirebaseErr("");
     try {
-      const res = await signUpWithEmailAndPassword(email, password)
-        .then()
+      await signUpWithEmailAndPassword(email, password)
+        .then(async ({ user }) => {
+          console.log(user);
+          await updateProfile(user, { displayName: user.fullName });
+
+          const userInfo = {
+            userId: user.uid,
+            email: email,
+            displayName: fullName,
+          };
+
+          await axios.post(`${import.meta.env.VITE_apiUrl}/users`, userInfo);
+        })
         .catch((err) => console.log(err));
-      await updateProfile(res.user, { displayName: fullName, photoURL: "" });
-      const user = {
-        email: email,
-        fullName: fullName,
-      };
+
+      navigate("/");
 
       ToastMessage("✅ Sign Up Successfully!");
     } catch (error) {

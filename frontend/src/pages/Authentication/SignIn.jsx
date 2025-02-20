@@ -6,12 +6,14 @@ import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import ToastMessage from "../../components/ToastMessage";
 import { FaArrowsSpin } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
 
 function SignIn() {
   const [loading, setLoading] = useState(false);
   const { signInWithEmailAndPass } = useAuth();
   const [firebaseErr, setFirebaseErr] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (userCredential) => {
     userCredential.preventDefault();
@@ -23,8 +25,18 @@ function SignIn() {
     setLoading(true);
     setFirebaseErr("");
     try {
-      await signInWithEmailAndPass(email, password);
+      await signInWithEmailAndPass(email, password).then(async ({ user }) => {
+        console.log(user);
+        const userInfo = {
+          userId: user.uid,
+          email: email,
+          displayName: email.split("@")[0],
+        };
 
+        await axios.post(`${import.meta.env.VITE_apiUrl}/users`, userInfo);
+      });
+
+      navigate("/");
       ToastMessage("✅ Sign In Successfully!");
     } catch (error) {
       switch (error.code) {

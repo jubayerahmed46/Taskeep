@@ -5,6 +5,7 @@ const rootHtml = require("./rootHtml");
 require("dotenv").config();
 
 const tasksRoute = require("./src/routes/todo");
+const usersRoute = require("./src/routes/users");
 
 // setUp port and application
 const port = process.env.PORT || 55555;
@@ -23,6 +24,7 @@ app.use(
 
 // routes
 app.use("/api/tasks", tasksRoute);
+app.use("/api/users", usersRoute);
 
 app.get("/", (_, res) => {
   res.send(rootHtml);

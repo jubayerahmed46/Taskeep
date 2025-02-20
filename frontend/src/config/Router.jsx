@@ -4,6 +4,7 @@ import Home from "../pages/Dashboard/sections/Home";
 import AuthLayout from "../layouts/AuthLayout";
 import SignUp from "../pages/Authentication/SignUp";
 import SignIn from "../pages/Authentication/SignIn";
+import PrivetRoute from "../routes/PrivetRoute";
 
 function Router() {
   return (
@@ -14,8 +15,10 @@ function Router() {
           <Route path="signin" element={<SignIn />} />
           <Route path="signUp" element={<SignUp />} />
         </Route>
-        <Route path="/" element={<DashboardLayout />}>
-          <Route path="/" element={<Home />} />
+        <Route element={<PrivetRoute />}>
+          <Route path="/" element={<DashboardLayout />}>
+            <Route path="/" element={<Home />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
