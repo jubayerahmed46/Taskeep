@@ -7,7 +7,7 @@ require("dotenv").config();
 const tasksRoute = require("./src/routes/todo");
 
 // setUp port and application
-const port = process.env.PORT || 5880;
+const port = process.env.PORT || 55555;
 const app = express();
 
 // call the the function before calling 'app' object. otherwise, there might error.
