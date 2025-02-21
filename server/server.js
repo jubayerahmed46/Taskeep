@@ -20,7 +20,7 @@ const io = new Server(wss, {
 connectDB();
 
 // middlewares
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: ["http://localhost:5173"] }));
 app.use(express.json());
 
 io.on("connection", (socket) => {

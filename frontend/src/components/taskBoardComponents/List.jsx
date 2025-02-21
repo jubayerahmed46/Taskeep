@@ -3,14 +3,14 @@ import { useDrag } from "react-dnd";
 function Task({ task, tasks, setTasks }) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "task",
-    item: { id: task.id },
+    item: { id: task._id },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   }));
 
   const deleteHandler = (id) => {
-    const filterTasks = tasks.filter((t) => t.id !== id);
+    const filterTasks = tasks.filter((t) => t._id !== id);
 
     localStorage.setItem("tasks", JSON.stringify(filterTasks));
 
@@ -26,10 +26,10 @@ function Task({ task, tasks, setTasks }) {
       {" "}
       <div>
         {" "}
-        <p>{task.name}</p> <p className="text-xs "> {task.description} </p>
+        <p>{task.title}</p> <p className="text-xs "> {task.description} </p>
       </div>
       <svg
-        onClick={() => deleteHandler(task.id)}
+        onClick={() => deleteHandler(task._id)}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

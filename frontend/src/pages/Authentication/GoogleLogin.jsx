@@ -16,7 +16,7 @@ function GoogleLogin({ label }) {
           displayName: user.displayName,
         };
 
-        await axios.post(`${import.meta.env.VITE_apiUrl}/users`, userInfo);
+        await axios.post(`${import.meta.env.VITE_apiUrl}/api/users`, userInfo);
 
         navigate("/");
         ToastMessage("✅ Sign In Successfully!");

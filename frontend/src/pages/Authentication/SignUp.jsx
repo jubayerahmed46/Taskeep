@@ -43,7 +43,10 @@ function SignUp() {
             displayName: fullName,
           };
 
-          await axios.post(`${import.meta.env.VITE_apiUrl}/users`, userInfo);
+          await axios.post(
+            `${import.meta.env.VITE_apiUrl}/api/users`,
+            userInfo
+          );
         })
         .catch((err) => console.log(err));
 

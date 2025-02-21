@@ -33,7 +33,7 @@ function SignIn() {
           displayName: email.split("@")[0],
         };
 
-        await axios.post(`${import.meta.env.VITE_apiUrl}/users`, userInfo);
+        await axios.post(`${import.meta.env.VITE_apiUrl}/api/users`, userInfo);
       });
 
       navigate("/");

@@ -3,13 +3,60 @@ import CreateTask from "./CreateTask";
 import TasksList from "./TasksList";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import useAuth from "../../hooks/useAuth";
+import { io } from "socket.io-client";
+
+const socket = io(import.meta.env.VITE_surl);
 
 function TaskBoard() {
   const [tasks, setTasks] = useState([]);
+  const { user } = useAuth();
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_apiUrl}/api/tasks/${user.email}`
+      );
+      setTasks(data);
+      return data;
+    },
+  });
+
+  // Listen for WebSocket Events
   useEffect(() => {
-    setTasks(JSON.parse(localStorage.getItem("tasks")));
+    // When a new task is created
+    socket.on("taskCreated", (newTask) => {
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+    });
+
+    // When a task is updated
+    socket.on("taskUpdated", (updatedTask) => {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === updatedTask._id ? updatedTask : task
+        )
+      );
+    });
+
+    // When a task is deleted
+    socket.on("taskDeleted", (deletedTaskId) => {
+      setTasks((prevTasks) =>
+        prevTasks.filter((task) => task._id !== deletedTaskId)
+      );
+    });
+
+    // Cleanup on component unmount
+    return () => {
+      socket.off("taskCreated");
+      socket.off("taskUpdated");
+      socket.off("taskDeleted");
+    };
   }, []);
+
+  console.log(tasks);
 
   return (
     <DndProvider backend={HTML5Backend}>
