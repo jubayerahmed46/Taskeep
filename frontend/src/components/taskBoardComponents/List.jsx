@@ -1,4 +1,8 @@
+import axios from "axios";
 import { useDrag } from "react-dnd";
+import { io } from "socket.io-client";
+
+const socket = io(import.meta.env.VITE_apiUrl);
 
 function Task({ task, tasks, setTasks }) {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -9,12 +13,18 @@ function Task({ task, tasks, setTasks }) {
     }),
   }));
 
-  const deleteHandler = (id) => {
+  const deleteHandler = async (id) => {
     const filterTasks = tasks.filter((t) => t._id !== id);
-
-    localStorage.setItem("tasks", JSON.stringify(filterTasks));
-
     setTasks(filterTasks);
+
+    await axios
+      .delete(`${import.meta.env.VITE_apiUrl}/api/tasks/${id}`, {
+        status,
+      })
+      .then((res) => {
+        socket.emit("taskDeleted", res.data.id);
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div

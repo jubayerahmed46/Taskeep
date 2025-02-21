@@ -4,7 +4,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import useAuth from "../../hooks/useAuth";
 
-const socket = io(import.meta.env.VITE_surl);
+const socket = io(import.meta.env.VITE_apiUrl);
 function CreateTask({ tasks, setTasks }) {
   const { user } = useAuth();
   const [task, setTask] = useState({
@@ -20,6 +20,7 @@ function CreateTask({ tasks, setTasks }) {
       ...task,
       email: user.email,
     });
+
     // Listen for new tasks via WebSocket
     socket.on("taskCreated", (newTask) => {
       setTasks((prev) => [...prev, newTask]);

@@ -16,8 +16,6 @@ const taskRoutes = (io) => {
       doc._id = result.insertedId;
       io.emit("taskCreated", doc);
 
-      console.log({ message: "Task created", task: doc });
-
       return res.status(201).send({ message: "Task created", task: doc });
     }
   });
@@ -28,7 +26,7 @@ const taskRoutes = (io) => {
 
     const result = await taskColl.find({ email }).toArray();
 
-    res.json(result);
+    res.send(result);
   });
 
   router.patch("/:id", async (req, res) => {
@@ -41,7 +39,17 @@ const taskRoutes = (io) => {
 
     const updatedTask = { id, status };
     io.emit("taskUpdated", updatedTask);
-    res.json({ message: "Task status updated", updatedTask });
+    res.send({ message: "Task status updated", updatedTask });
+  });
+
+  router.delete("/:id", async (req, res) => {
+    const taskColl = tasksCollection();
+    const { id } = req.params;
+
+    await taskColl.deleteOne({ _id: new ObjectId(id) });
+
+    io.emit("taskDeleted", { id });
+    res.send({ message: "Task status updated", id });
   });
 
   return router;

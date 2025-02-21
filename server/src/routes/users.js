@@ -13,8 +13,6 @@ router.post("/", async (req, res) => {
     return res.send("User Exist!");
   }
 
-  console.log();
-
   const result = await usersColl.insertOne({ userId, email, displayName });
 
   res.send(result);

@@ -26,7 +26,6 @@ function SignIn() {
     setFirebaseErr("");
     try {
       await signInWithEmailAndPass(email, password).then(async ({ user }) => {
-        console.log(user);
         const userInfo = {
           userId: user.uid,
           email: email,

@@ -49,8 +49,6 @@ function AuthProvider({ children }) {
     const clearObserver = onAuthStateChanged(auth, async (userCredential) => {
       setUser(userCredential);
       setLoading(false);
-
-      console.log(userCredential);
     });
 
     return () => clearObserver;

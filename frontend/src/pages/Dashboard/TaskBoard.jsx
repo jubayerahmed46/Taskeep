@@ -8,24 +8,25 @@ import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { io } from "socket.io-client";
 
-const socket = io(import.meta.env.VITE_surl);
+const socket = io(import.meta.env.VITE_apiUrl);
 
 function TaskBoard() {
   const [tasks, setTasks] = useState([]);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const { data, isLoading } = useQuery({
     queryKey: ["tasks"],
+    enabled: !loading,
     queryFn: async () => {
       const { data } = await axios.get(
         `${import.meta.env.VITE_apiUrl}/api/tasks/${user.email}`
       );
+
       setTasks(data);
       return data;
     },
   });
 
-  // Listen for WebSocket Events
   useEffect(() => {
     // When a new task is created
     socket.on("taskCreated", (newTask) => {
@@ -55,8 +56,6 @@ function TaskBoard() {
       socket.off("taskDeleted");
     };
   }, []);
-
-  console.log(tasks);
 
   return (
     <DndProvider backend={HTML5Backend}>

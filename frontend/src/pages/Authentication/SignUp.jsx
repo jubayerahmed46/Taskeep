@@ -34,7 +34,6 @@ function SignUp() {
     try {
       await signUpWithEmailAndPassword(email, password)
         .then(async ({ user }) => {
-          console.log(user);
           await updateProfile(user, { displayName: user.fullName });
 
           const userInfo = {

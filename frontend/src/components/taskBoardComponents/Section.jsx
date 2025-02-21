@@ -4,7 +4,7 @@ import Task from "./List";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const socket = io(import.meta.env.VITE_surl);
+const socket = io(import.meta.env.VITE_apiUrl);
 
 function Section({ status, tasks, setTasks, inProgress, done, todos }) {
   const [{ isOver }, drop] = useDrop(() => ({
@@ -48,8 +48,6 @@ function Section({ status, tasks, setTasks, inProgress, done, todos }) {
       })
       .catch((err) => console.log(err));
   };
-
-  // console.log(tasksToMap);
 
   return (
     <div
