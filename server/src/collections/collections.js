@@ -1,6 +1,6 @@
 const { getDB } = require("../db/db");
 
-const todoCollection = () => getDB().collection("todo");
+const tasksCollection = () => getDB().collection("tasks");
 const usersCollection = () => getDB().collection("users");
 
-module.exports = { todoCollection, usersCollection };
+module.exports = { tasksCollection, usersCollection };

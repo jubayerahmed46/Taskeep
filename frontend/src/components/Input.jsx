@@ -6,6 +6,7 @@ function Input({
   className = "",
   onChange,
   children,
+  value = "",
 }) {
   const classNames =
     className +
@@ -22,6 +23,7 @@ function Input({
           className={classNames}
           placeholder={placeholder}
           onChange={onChange}
+          value={value}
           required
         />
       ) : (

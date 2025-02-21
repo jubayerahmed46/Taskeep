@@ -11,8 +11,6 @@ function TaskBoard() {
     setTasks(JSON.parse(localStorage.getItem("tasks")));
   }, []);
 
-  console.log(tasks);
-
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="text-blue-600 font-bold text-xl  w-full ">

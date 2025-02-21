@@ -5,3 +5,6 @@
 * {
   color: black;
 }
+body {
+  height: 100vh;
+}

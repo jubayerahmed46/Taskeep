@@ -1,37 +1,52 @@
 import { useState } from "react";
 import Input from "../../components/Input";
+import axios from "axios";
+import { io } from "socket.io-client";
 
+const socket = io(import.meta.env.VITE_surl);
 function CreateTask({ tasks, setTasks }) {
   const [task, setTask] = useState({
-    id: "",
-    name: "",
-    status: "todo", // there will be "in-progress", "done"
+    title: "",
+    description: "",
+    status: "todo",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setTasks((prev) => {
-      const list = [...prev, task];
+    // setTasks(async (prev) => [...prev, task]);
+    const res = await axios.post(`${import.meta.env.VITE_apiUrl}/tasks`, task);
+    socket.emit("taskCreated", res.data);
 
-      localStorage.setItem("tasks", JSON.stringify(list));
-
-      return list;
-    });
-
-    setTask({ id: "", name: "", status: "done" });
+    setTask({ title: "", description: "", status: "todo" });
+    e.target.reset();
   };
 
   return (
     <div>
-      <form className="flex " onSubmit={handleSubmit}>
+      <form
+        className="flex gap-2 flex-col max-w-xl  mx-auto my-5 p-4 bg-slate-300 rounded-md"
+        onSubmit={handleSubmit}
+      >
         <Input
           label=""
+          name="title"
+          value={task.title}
           onChange={(e) =>
             setTask({
               ...task,
-              id: Math.random() * 837498,
-              name: e.target.value,
+              title: e.target.value,
+            })
+          }
+        />
+        <Input
+          label=""
+          name="description"
+          value={task.description}
+          onChange={(e) =>
+            setTask({
+              ...task,
+              description: e.target.value,
             })
           }
         />

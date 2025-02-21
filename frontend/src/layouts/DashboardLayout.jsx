@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 
 function DashboardLayout() {
   return (
-    <div className="relative bg-littleWhite min-h-full">
+    <div className="relative bg-littleWhite min-h-screen">
       {/* Fixed Navbar */}
       <nav className="fixed shadow-md w-full top-0 left-0 z-50">
         <NavBar />
